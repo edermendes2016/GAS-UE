@@ -9,10 +9,14 @@
 #include "CharacterBase.generated.h"
 
 
+class UBasicAttributeSet;
+class UProgressionAttributeSet;
+class UGameplayEffect;
+
 UCLASS()
 class GAS_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
 {
-	GENERATED_BODY()
+        GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
@@ -23,8 +27,17 @@ public:
 	UAbilitySystemComponent* AbilitySystemComponent;
 
 	// Attribute Sets
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
-	class UBasicAttributeSet* BasicAttributeSet;
+        UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
+        UBasicAttributeSet* BasicAttributeSet;
+
+        UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
+        UProgressionAttributeSet* ProgressionAttributeSet;
+
+        UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Progression")
+        TSubclassOf<UGameplayEffect> GE_XPGainClass;
+
+        UFUNCTION(BlueprintCallable, Category = "GAS|Progression")
+        void GrantExperience(float Amount);
 
 protected:
 

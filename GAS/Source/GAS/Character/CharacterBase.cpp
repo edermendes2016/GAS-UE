@@ -6,6 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/AttributeSets/BasicAttributeSet.h"
+#include "GAS/Attributes/ProgressionAttributeSet.h"
+#include "GameplayTagContainer.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -37,8 +39,9 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
 	
-	// Add the basic attribute set
-	//BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));	
+        // Attribute sets
+        //BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));
+        ProgressionAttributeSet = CreateDefaultSubobject<UProgressionAttributeSet>(TEXT("ProgressionAttributeSet"));
 }
 
 
@@ -85,12 +88,49 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+        return AbilitySystemComponent;
+}
+
+void ACharacterBase::GrantExperience(float Amount)
+{
+        if (!HasAuthority())
+        {
+                return;
+        }
+
+        if (!AbilitySystemComponent || !GE_XPGainClass)
+        {
+                return;
+        }
+
+        const float ClampedAmount = FMath::Max(0.f, Amount);
+        if (ClampedAmount <= 0.f)
+        {
+                return;
+        }
+
+        FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+        FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GE_XPGainClass, 1.f, ContextHandle);
+        if (!SpecHandle.IsValid())
+        {
+                return;
+        }
+
+        FGameplayEffectSpec* Spec = SpecHandle.Data.Get();
+        if (!Spec)
+        {
+                return;
+        }
+
+        static const FGameplayTag DataXPTag = FGameplayTag::RequestGameplayTag(FName("Data.XP"));
+        Spec->SetLevel(1.f);
+        Spec->SetSetByCallerMagnitude(DataXPTag, ClampedAmount);
+        AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*Spec);
 }
 
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay()
 {
-	Super::BeginPlay();
-	
+        Super::BeginPlay();
+
 }
