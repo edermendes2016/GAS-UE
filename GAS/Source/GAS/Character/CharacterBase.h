@@ -31,7 +31,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	EGameplayEffectReplicationMode AscReplicationMode = EGameplayEffectReplicationMode::Mixed;
 
-	
+	bool bHasInitializedAbilitySystem = false;
+
+	void InitializeAbilitySystem();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

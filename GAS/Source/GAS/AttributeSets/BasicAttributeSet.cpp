@@ -8,8 +8,10 @@
 UBasicAttributeSet::UBasicAttributeSet()
 {
 	// Initialize attributes with default values
-	Health = 100.f;
+	Health = 50.f;
 	MaxHealth = 100.f;
+	Mana = 100.f;
+	MaxMana = 100.f;
 	Stamina = 100.f;
 	MaxStamina = 100.f;	
 }
@@ -22,6 +24,8 @@ void UBasicAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, Mana, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
 

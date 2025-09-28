@@ -38,14 +38,18 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
 	
 	// Add the basic attribute set
-	BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));	
+	//BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));	
 }
 
-// Called when the game starts or when spawned
-void ACharacterBase::BeginPlay()
+
+
+void ACharacterBase::InitializeAbilitySystem()
 {
-	Super::BeginPlay();
-	
+	if (AbilitySystemComponent && !bHasInitializedAbilitySystem)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		bHasInitializedAbilitySystem = true;
+	}
 }
 
 void ACharacterBase::PossessedBy(AController* NewController)
@@ -62,10 +66,7 @@ void ACharacterBase::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	}
+	InitializeAbilitySystem();
 }
 
 // Called every frame
@@ -87,3 +88,9 @@ UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+// Called when the game starts or when spawned
+void ACharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}

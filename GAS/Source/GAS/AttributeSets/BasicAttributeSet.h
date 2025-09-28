@@ -28,6 +28,15 @@ public:
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS_BASIC(UBasicAttributeSet, MaxHealth);
 
+	// Mana
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing=OnRep_Mana)
+	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS_BASIC(UBasicAttributeSet, Mana);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing=OnRep_MaxMana)
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS_BASIC(UBasicAttributeSet, MaxMana);
+	
 	//Stamina
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing=OnRep_Stamina)
 	FGameplayAttributeData Stamina;
@@ -62,7 +71,18 @@ public:
 	{
 		GAMEPLAYATTRIBUTE_REPNOTIFY(UBasicAttributeSet, MaxStamina, OldMaxStamina);
 	}
+
+	UFUNCTION()
+	void OnRep_Mana(const FGameplayAttributeData& OldMana) const
+	{
+		GAMEPLAYATTRIBUTE_REPNOTIFY(UBasicAttributeSet, Mana, OldMana);
+	}
 	
+	UFUNCTION()
+	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
+	{
+		GAMEPLAYATTRIBUTE_REPNOTIFY(UBasicAttributeSet, MaxMana, OldMaxMana);
+	}
 
 	// Override GetLifetimeReplicatedProps
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
