@@ -16,9 +16,26 @@ ACharacterBase::ACharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Add Ability System Component
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(AscReplicationMode);
+        AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+
+        BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));
+        ProgressionAttributeSet = CreateDefaultSubobject<UProgressionAttributeSet>(TEXT("ProgressionAttributeSet"));
+
+        if (AbilitySystemComponent)
+        {
+                AbilitySystemComponent->SetIsReplicated(true);
+                AbilitySystemComponent->SetReplicationMode(AscReplicationMode);
+
+                if (BasicAttributeSet)
+                {
+                        AbilitySystemComponent->AddAttributeSetSubobject(BasicAttributeSet);
+                }
+
+                if (ProgressionAttributeSet)
+                {
+                        AbilitySystemComponent->AddAttributeSetSubobject(ProgressionAttributeSet);
+                }
+        }
 
 	//set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(35.f, 90.0f);
@@ -40,8 +57,6 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
 	
         // Attribute sets
-        //BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));
-        ProgressionAttributeSet = CreateDefaultSubobject<UProgressionAttributeSet>(TEXT("ProgressionAttributeSet"));
 }
 
 
@@ -126,6 +141,11 @@ void ACharacterBase::GrantExperience(float Amount)
         Spec->SetLevel(1.f);
         Spec->SetSetByCallerMagnitude(DataXPTag, ClampedAmount);
         AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*Spec);
+}
+
+void ACharacterBase::ServerGrantExperience_Implementation(float Amount)
+{
+        GrantExperience(Amount);
 }
 
 // Called when the game starts or when spawned

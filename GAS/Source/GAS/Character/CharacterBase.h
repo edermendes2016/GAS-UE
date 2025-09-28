@@ -39,6 +39,9 @@ public:
         UFUNCTION(BlueprintCallable, Category = "GAS|Progression")
         void GrantExperience(float Amount);
 
+        UFUNCTION(Server, Reliable)
+        void ServerGrantExperience(float Amount);
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
