@@ -20,14 +20,19 @@ public:
 
 	// Ability System Component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
-	class UAbilitySystemComponent* AbilitySystemComponent;
+	UAbilitySystemComponent* AbilitySystemComponent;
+
+	// Attribute Sets
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
+	class UBasicAttributeSet* BasicAttributeSet;
 
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	EGameplayEffectReplicationMode AscReplicationMode = EGameplayEffectReplicationMode::Mixed;
+
 	
-protected:
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

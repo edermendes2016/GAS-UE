@@ -2,10 +2,10 @@
 
 
 #include "CharacterBase.h"
-#include "CharacterBase.h"
 
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GAS/AttributeSets/BasicAttributeSet.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -37,7 +37,8 @@ ACharacterBase::ACharacterBase()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
 	
-	
+	// Add the basic attribute set
+	BasicAttributeSet = CreateDefaultSubobject<UBasicAttributeSet>(TEXT("BasicAttributeSet"));	
 }
 
 // Called when the game starts or when spawned
