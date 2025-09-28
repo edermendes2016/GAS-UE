@@ -1,8 +1,8 @@
-#include "GAS/ExecCalcs/ExecCalc_AddXP.h"
+#include "GAS/GAS/ExecCalcs/ExecCalc_AddXP.h"
 
 #include "AbilitySystemComponent.h"
 #include "Curves/CurveFloat.h"
-#include "GAS/Attributes/ProgressionAttributeSet.h"
+#include "GAS/GAS/Attributes/ProgressionAttributeSet.h"
 #include "GameplayEffectExtension.h"
 #include "GameplayTagContainer.h"
 

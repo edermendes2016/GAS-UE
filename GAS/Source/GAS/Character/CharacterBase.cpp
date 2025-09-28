@@ -6,7 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GAS/AttributeSets/BasicAttributeSet.h"
-#include "GAS/Attributes/ProgressionAttributeSet.h"
+#include "GAS/Gas/Attributes/ProgressionAttributeSet.h"
 #include "GameplayTagContainer.h"
 
 // Sets default values

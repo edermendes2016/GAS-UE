@@ -1,4 +1,4 @@
-#include "GAS/Attributes/ProgressionAttributeSet.h"
+#include "GAS/GAS/Attributes/ProgressionAttributeSet.h"
 
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
