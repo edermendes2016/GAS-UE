@@ -3,6 +3,7 @@
 
 #include "BasicAttributeSet.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectExtension.h"
 
 
 UBasicAttributeSet::UBasicAttributeSet()
@@ -26,6 +27,28 @@ void UBasicAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBasicAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+}
+
+
+void UBasicAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		const float ClampedHealth = FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth());
+		SetHealth(ClampedHealth);
+	}
+	else if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		const float ClampedMana = FMath::Clamp(GetMana(), 0.0f, GetMaxMana());
+		SetMana(ClampedMana);
+	}
+	else if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
+	{
+		const float ClampedStamina = FMath::Clamp(GetStamina(), 0.0f, GetMaxStamina());
+		SetStamina(ClampedStamina);
+	}
 }
 
 
